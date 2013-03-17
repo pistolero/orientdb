@@ -3,7 +3,7 @@ OrientDB
 
 Pure Python OrientDB binary protocol adapter and Object to Graph mapper.
 
-work-in-progress, use at own risk.
+**work-in-progress, use at own risk.**
 
 
 Usage example:
