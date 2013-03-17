@@ -6,7 +6,9 @@ for `OrientDB`_ database.
 
 **work-in-progress, use at own risk.**
 
-Usage example::
+Usage example:
+
+.. code:: python
 
     from orientdb import OClass, StringProperty, LinkListProperty, LinkProperty, ODBServer
 
