@@ -1,9 +1,19 @@
 import new
 
+
 class ClassProperty(object):
     name = None
+    default = None
+
+    def __init__(self, default=None):
+        self.default = default
 
     def __get__(self, instance, klass=None):
+        if not self.name in instance.__dict__:
+            default = self.default
+            if callable(default):
+                default = default()
+            instance.__dict__[self.name] = default
         return instance.__dict__[self.name]
 
     def __set__(self, instance, value):
@@ -122,11 +132,15 @@ class Set(ClassProperty):
 class List(ClassProperty):
     def __init__(self, type):
         self.type = type
+        self.default = []
 
     def __getattr__(self, instance, klass=None):
         pass
 
 class LinkListProperty(ClassProperty):
+    def __init__(self):
+        self.default = []
+
     def __set__(self, instance, value):
         if not isinstance(value, list):
             raise ValueError()

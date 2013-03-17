@@ -1,7 +1,6 @@
 from nose.tools import eq_
 from orientdb.coder import odb_loads, RID
 
-#print odb_loads('ORole@name:"reader",inheritedRole:,mode:0,rules:{"database":2,"database.cluster.internal":2,"database.cluster.orole":2,"database.cluster.ouser":2,"database.class.*":2,"database.cluster.*":2,"database.query":2,"database.command":2,"database.hook.record":2}')
 
 def test_odb_loads1():
     source = 'Profile@nick:"ThePresident",follows:[],followers:[#10:5,#10:6],name:"Barack",surname:"Obama",location:#3:2,invitedBy:,salary_cloned:,salary:120.3f'
@@ -29,21 +28,4 @@ def test_odb_loads3():
 
     eq_(result, expected)
 
-
-
-from orientdb.coder import escape, unescape
-def escape_test():
-
-    real = escape('asdf"g\\h')
-    expected = 'asdf\\"g\\\\h'
-
-    eq_(real, expected)
-
-
-
-def unescape_test():
-    real = unescape('asdf\\"g\\\\h')
-    expected = 'asdf"g\\h'
-
-    eq_(real, expected)
 

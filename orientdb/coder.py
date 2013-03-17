@@ -6,7 +6,13 @@ def odb_loads(x):
     return decoder.decode(x)
 
 
+def odb_dumps(x):
+    encoder = RecordEncoder()
+    return encoder.encode(x)
+
+
 from .types import RID
+
 
 class RecordDecoder(object):
     number_format_map = {
@@ -194,35 +200,57 @@ class RecordEncoder(object):
         self.write_class(record)
         self.write_data(record)
 
+        val = self.buf.getvalue()
+        self.buf.seek(0)
+        self.buf.truncate()
+        return val
+
     def write_class(self, record):
-        if record.class_name:
-            self.buf.write(record.class_name)
+        if record.__classname__:
+            self.buf.write(record.__classname__)
             self.buf.write('@')
 
     def write_data(self, record):
-        for key, value in record.data.iteritems():
+        first = True
+        for key, attr in record._fields.iteritems():
+            if not first:
+                self.buf.write(',')
+            val = getattr(record, key)
             self.buf.write(key)
             self.buf.write(':')
-            self.write_value(value)
+            self.write_value(val)
+            first = False
 
     def write_value(self, value, explicit_null=False):
+        from .classes import LinkList, OClass
         if value is None and explicit_null:
             self.buf.write('null')
         elif isinstance(value, bool):
             self.buf.write('true' if value else 'false')
         elif isinstance(value, basestring):
-            self.buf('')
+            self.buf.write(escape(value))
+        elif isinstance(value, int):
+            self.buf.write(str(value))
+        elif isinstance(value, (list, tuple, LinkList)):
+            self.write_list(value)
+        elif isinstance(value, RID):
+            self.buf.write(str(value))
+        elif isinstance(value, OClass):
+            self.buf.write(str(value.rid))
+        else:
+            raise ValueError('don\'t know how to serialize %r' % type(value))
+
+    def write_list(self, value):
+        self.buf.write('[')
+        for val in value:
+            self.write_value(val)
+        self.buf.write(']')
 
 
 _escape_re = re.compile(r'["\\]')
 _unescape_re = re.compile(r'\\(["\\])')
 
 def escape(s):
-    # def replacer(match):
-    #     if match.group(0) == '"':
-    #         return r'\"'
-    #     elif match.group(0) == '/':
-    #         return r'\\'
     return _escape_re.sub('\\\\\g<0>', s)
 
 def unescape(s):
