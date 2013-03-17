@@ -1,5 +1,5 @@
 from nose.tools import eq_
-from .coder import odb_loads, RID
+from orientdb.coder import odb_loads, RID
 
 #print odb_loads('ORole@name:"reader",inheritedRole:,mode:0,rules:{"database":2,"database.cluster.internal":2,"database.cluster.orole":2,"database.cluster.ouser":2,"database.class.*":2,"database.cluster.*":2,"database.query":2,"database.command":2,"database.hook.record":2}')
 
@@ -31,8 +31,8 @@ def test_odb_loads3():
 
 
 
+from orientdb.coder import escape, unescape
 def escape_test():
-    from .coder import escape
 
     real = escape('asdf"g\\h')
     expected = 'asdf\\"g\\\\h'
@@ -42,8 +42,6 @@ def escape_test():
 
 
 def unescape_test():
-    from .coder import unescape
-
     real = unescape('asdf\\"g\\\\h')
     expected = 'asdf"g\\h'
 
