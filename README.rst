@@ -6,6 +6,9 @@ for `OrientDB`_ database.
 
 **work-in-progress, use at own risk.**
 
+**so far it has support only for reading objects from OrientDB**
+
+
 Usage example:
 
 .. code:: python
