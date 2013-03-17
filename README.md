@@ -1,7 +1,7 @@
 OrientDB
 ========
 
-Pure Python OrientDB binary protocol adapter and Object to Graph mapper.
+Pure Python OrientDB binary protocol adapter and Object to Graph mapper for [OrientDB](http://www.orientdb.org/) database.
 
 **work-in-progress, use at own risk.**
 
